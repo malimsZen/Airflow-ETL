@@ -35,7 +35,8 @@ unzip_data = BashOperator(
 extract_data_from_csv = BashOperator(
     task_id = 'extract_data_from_csv',
     bash_command = '''
-    cut -d"," -f1,2,3,4 /home/project/airflow/dags/finalassignment/vehicle-data.csv > 
+    cut -d"," -f1,2,3,4 /home/project/airflow/dags/finalassignment/vehicle-data.csv
+    > 
     /home/project/airflow/dags/finalassignment/csv_data.csv''',
     dag=dag,
 )
@@ -43,14 +44,19 @@ extract_data_from_csv = BashOperator(
 #Task to extract data from tsv file.
 extract_data_from_tsv = BashOperator(
     task_id='extract_data_from_tsv',
-    bash_command='cut -d$"\t" -f5,6,7 /home/project/airflow/dags/finalassignment/tollplaza-data.tsv > /home/project/airflow/dags/finalassignment/tsc_data.csv',
+    bash_command='''
+    cut -d$"\t" -f5,6,7 /home/project/airflow/dags/finalassignment/tollplaza-data.tsv 
+    > 
+    /home/project/airflow/dags/finalassignment/tsc_data.csv''',
     dag=dag,
 )
 
 #Task to extract data from fixed width file.
 extract_data_from_fixed_width = BashOperator(
     task_id='extract_data_from_fixed_width',
-    bash_command='cut -d" "-f6-7 /home/project/airflow/dags/finalassignment/paymeny-data.txt > /home/project/airflow/dags/finalassignment/fixed_width_data.csv',
+    bash_command='''cut -d" "-f6-7 /home/project/airflow/dags/finalassignment/paymeny-data.txt 
+    > 
+    /home/project/airflow/dags/finalassignment/fixed_width_data.csv''',
     dag=dag,
 )
 
@@ -64,7 +70,11 @@ consolidate_data=BashOperator(
 #Task to transform data
 transform_data=BashOperator(
     task_id='transform_data',
-    bash_command='awk -F "," '{print $1","$2","$3","toupper($4)","$5","$6","$7","$8","$9}' < extracted_data.csv > /home/project/airflow/dags/finalassignment/staging/transformed_data.csv ',
+    bash_command='''awk -F "," '{print $1","$2","$3","toupper($4)","$5","$6","$7","$8","$9}' 
+    < 
+    extracted_data.csv 
+    > 
+    /home/project/airflow/dags/finalassignment/staging/transformed_data.csv ''',
     dag=dag,
 )
 
